@@ -3,7 +3,7 @@ import React from 'react';
 const NewTaskForm = (props) => {
   return (
     <>
-      <input class="new-todo" placeholder="What needs to be done?" autofocus></input>
+      <input className="new-todo" placeholder="What needs to be done?" autoFocus></input>
     </>
   )
 }
