@@ -4,7 +4,7 @@ import Task from '../task'
 
 export default class TaskList extends Component {
   render() {
-    const { todos, onDeleted } = this.props;
+    const { todos, onDeleted, onCompleted } = this.props;
     const elements = todos.map((todo) => {
       const { id, ...taskProps } = todo;
       return (
@@ -12,6 +12,7 @@ export default class TaskList extends Component {
           <Task
             {...taskProps}
             onDeleted={() => onDeleted(id)}
+            onCompleted={() => onCompleted(id)}
           />
         </li>
       )

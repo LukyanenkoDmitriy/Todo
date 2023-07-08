@@ -2,27 +2,12 @@ import React, { Component } from 'react';
 
 export default class Task extends Component {
 
-  state = {
-    completed: false,
-    isChecked: false,
-  }
-
-  isComleted = () => {
-    this.setState(({ completed, isChecked }) => {
-      return {
-        completed: !completed,
-        isChecked: !isChecked,
-      }
-    })
-
-  }
-
   render() {
-    const { label, onDeleted } = this.props;
-    const { completed, isChecked } = this.state;
+    const { label, onDeleted, onCompleted, isCompleted, isChecked } = this.props;
+
     let classNames = "description"
 
-    if (completed) {
+    if (isCompleted) {
       classNames += " completed"
     }
     return (
@@ -31,12 +16,12 @@ export default class Task extends Component {
           className="toggle"
           type="checkbox"
           checked={isChecked}
-          onChange={this.isComleted}
+          onChange={onCompleted}
         />
         <label>
           <span
             className={classNames}
-            onClick={this.isComleted}
+            onClick={onCompleted}
           >{label}</span>
         </label>
         <button className="icon icon-edit" />
@@ -48,5 +33,3 @@ export default class Task extends Component {
     )
   }
 }
-
-
