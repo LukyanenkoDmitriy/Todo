@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 
 export default class Task extends Component {
-
   render() {
-    const { label, onDeleted, onCompleted, isCompleted, isChecked } = this.props;
-
+    const { id, label, isCompleted, isChecked, onDeleted, onCompleted } = this.props;
     let classNames = "description"
 
     if (isCompleted) {
@@ -30,6 +28,6 @@ export default class Task extends Component {
           onClick={onDeleted}
         />
       </div>
-    )
+    );
   }
 }

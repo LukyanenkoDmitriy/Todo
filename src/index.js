@@ -18,23 +18,16 @@ class App extends Component {
       this.createTask('Second task'),
       this.createTask('Third task'),
     ],
+    filter: 'all',
   }
 
   createTask(text) {
     return {
+      id: this.newId++,
       label: text,
       isCompleted: false,
       isChecked: false,
-      id: this.newId++,
     }
-  }
-
-  deleteTask = (id) => {
-    this.setState(({ data }) => {
-      return {
-        data: data.filter(task => task.id !== id)
-      }
-    })
   }
 
   addTask = (text) => {
@@ -42,6 +35,14 @@ class App extends Component {
     this.setState(({ data }) => {
       return {
         data: [newTask, ...data]
+      }
+    })
+  }
+
+  deleteTask = (id) => {
+    this.setState(({ data }) => {
+      return {
+        data: data.filter(task => task.id !== id)
       }
     })
   }
@@ -63,34 +64,36 @@ class App extends Component {
       };
     });
   }
-
-  filterAll = () => {
+  clearCompletedTasks = () => {
     this.setState(({ data }) => {
+      const newData = data.filter(task => !task.isCompleted);
       return {
-        data: [...data]
-      }
+        data: newData
+      };
     });
-  }
+  };
 
-  filterCompleted = () => {
-    this.setState(({ data }) => {
-      return {
-        data: data.filter(task => task.isCompleted)
-      }
-    })
-  }
 
-  filterActive = () => {
-    this.setState(({ data }) => {
-      return {
-        data: data.filter(task => !task.isCompleted)
-      }
-    })
-  }
+  handleFilterChange = (newFilter) => {
+    this.setState({ filter: newFilter });
+  };
+
 
   render() {
-    const { data } = this.state
+    const { data, filter } = this.state
     const activeTasks = data.filter(task => !task.isCompleted).length;
+
+    const filteredTasks = data.filter((task) => {
+      if (filter === 'completed' && task.isCompleted) {
+        return task
+      }
+      if (filter === 'active' && !task.isCompleted) {
+        return task;
+      }
+      if (filter === 'all') {
+        return task;
+      }
+    })
 
     return (
       <>
@@ -101,15 +104,15 @@ class App extends Component {
           />
         </header>
         <TaskList
-          todos={data}
+          filteredTasks={filteredTasks}
           onDeleted={this.deleteTask}
           onCompleted={this.onCompletedTask}
         />
+
         <Footer
           activeTasks={activeTasks}
-          filterCompleted={this.filterCompleted}
-          filterActive={this.filterActive}
-          filterAll={this.filterAll}
+          handleFilterChange={this.handleFilterChange}
+          clearCompletedTasks={this.clearCompletedTasks}
         />
       </>
     )
