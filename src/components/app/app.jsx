@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
+import "../../main.css";
+import "../../additional.css";
 
 import Footer from "../footer/footer";
 import NewTaskForm from "../new-task-form/new-task-form";
 import TaskList from "../task-list/task-list";
-
-import "../../main.css";
-import "../../additional.css";
 
 export default function App() {
   const [todo, setTodo] = useState([

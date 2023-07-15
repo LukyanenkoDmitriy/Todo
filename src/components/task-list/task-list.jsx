@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types'
 
 import Task from "../task/task";
 
@@ -36,3 +37,15 @@ export default function TaskList({ todo, setTodo, filtered }) {
   });
   return <ul className="todo-list">{tasks}</ul>;
 }
+
+TaskList.defaultProps = {
+  todo: [],
+  setTodo: () => {},
+  filtered: [],
+};
+
+TaskList.propTypes = {
+  todo: PropTypes.arrayOf(PropTypes.object),
+  setTodo: PropTypes.func,
+  filtered: PropTypes.arrayOf(PropTypes.object),
+};

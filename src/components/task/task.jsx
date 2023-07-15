@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { formatDistanceToNow } from "date-fns";
 
 export default function Task({
   todo,
@@ -11,6 +13,7 @@ export default function Task({
 }) {
   const [edit, setEdit] = useState(null);
   const [value, setValue] = useState("");
+  const [createdTime, setCreatedTime] = useState(new Date());
 
   let classNames = "description";
 
@@ -20,6 +23,7 @@ export default function Task({
     setEdit(id);
     setValue(title);
   }
+
   function saveTask(id) {
     let newTodo = todo.map((task) => {
       if (task.id === id) {
@@ -31,6 +35,12 @@ export default function Task({
     setTodo(newTodo);
     setEdit(null);
   }
+
+  function getCreatedTime() {
+    const timeAgo = formatDistanceToNow(createdTime, { addSuffix: true });
+    return `created ${timeAgo}`;
+  }
+
   return (
     <div className="view">
       <input
@@ -51,6 +61,7 @@ export default function Task({
           <span className={classNames} onClick={() => onCompleteTask(id)}>
             {title}
           </span>
+          <span className="created">{getCreatedTime()}</span>
         </label>
       )}
 
@@ -71,3 +82,13 @@ export default function Task({
     </div>
   );
 }
+
+Task.propTypes = {
+  todo: PropTypes.arrayOf(PropTypes.object),
+  setTodo: PropTypes.func,
+  id: PropTypes.number,
+  title: PropTypes.string,
+  completed: PropTypes.bool,
+  onDeleteTask: PropTypes.func,
+  onCompleteTask: PropTypes.func,
+};

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { v4 as uuidv4 } from "uuid";
 
 export default function NewTaskForm({ todo, setTodo }) {
@@ -29,23 +30,17 @@ export default function NewTaskForm({ todo, setTodo }) {
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
-      <input
-        type="number"
-        className="new-todo-form__timer"
-        placeholder="Min"
-        required
-        min={0}
-        max={60}
-      />
-      <input
-        type="number"
-        className="new-todo-form__timer"
-        placeholder="Sec"
-        required
-        min={0}
-        max={60}
-      />
       <button type="submit" onClick={addTask}></button>
     </form>
   );
 }
+
+NewTaskForm.defaultProps = {
+  todo: [],
+  setTodo: () => {},
+};
+
+NewTaskForm.propTypes = {
+  todo: PropTypes.arrayOf(PropTypes.object),
+  setTodo: PropTypes.func,
+};

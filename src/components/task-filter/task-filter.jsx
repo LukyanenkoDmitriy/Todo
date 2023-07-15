@@ -1,8 +1,7 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 export default function TaskFilter({ filterTasks }) {
-
-
   return (
     <ul className="filters">
       <li>
@@ -29,3 +28,11 @@ export default function TaskFilter({ filterTasks }) {
     </ul>
   );
 }
+
+TaskFilter.defaultProps = {
+  filterTasks: () => {},
+};
+
+TaskFilter.propTypes = {
+  filterTasks: PropTypes.func,
+};
