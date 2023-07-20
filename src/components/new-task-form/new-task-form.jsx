@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { v4 as uuidv4 } from "uuid";
+import { useState } from 'react'
+import PropTypes from 'prop-types'
+import { v4 as uuidv4 } from 'uuid'
 
 export default function NewTaskForm({ todo, setTodo }) {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('')
 
   function addTask(e) {
-    e.preventDefault();
+    e.preventDefault()
     if (value) {
       setTodo([
         {
@@ -15,9 +15,9 @@ export default function NewTaskForm({ todo, setTodo }) {
           completed: false,
         },
         ...todo,
-      ]);
-      setValue("");
-    } else alert("Please enter a task");
+      ])
+      setValue('')
+    } else alert('Please enter a task')
   }
 
   return (
@@ -32,15 +32,15 @@ export default function NewTaskForm({ todo, setTodo }) {
       />
       <button type="submit" onClick={addTask}></button>
     </form>
-  );
+  )
 }
 
 NewTaskForm.defaultProps = {
   todo: [],
   setTodo: () => {},
-};
+}
 
 NewTaskForm.propTypes = {
   todo: PropTypes.arrayOf(PropTypes.object),
   setTodo: PropTypes.func,
-};
+}

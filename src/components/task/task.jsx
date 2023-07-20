@@ -1,54 +1,41 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { formatDistanceToNow } from "date-fns";
+import { useState } from 'react'
+import PropTypes from 'prop-types'
+import { formatDistanceToNow } from 'date-fns'
 
-export default function Task({
-  todo,
-  setTodo,
-  id,
-  title,
-  completed,
-  onDeleteTask,
-  onCompleteTask,
-}) {
-  const [edit, setEdit] = useState(null);
-  const [value, setValue] = useState("");
-  const [createdTime, setCreatedTime] = useState(new Date());
+export default function Task({ todo, setTodo, id, title, completed, onDeleteTask, onCompleteTask }) {
+  const [edit, setEdit] = useState(null)
+  const [value, setValue] = useState('')
+  const [createdTime] = useState(new Date())
 
-  let classNames = "description";
+  let classNames = 'description'
 
-  completed ? (classNames += " completed") : (classNames += "");
+  completed ? (classNames += ' completed') : (classNames += '')
 
   function onEditTask(id, title) {
-    setEdit(id);
-    setValue(title);
+    setEdit(id)
+    setValue(title)
   }
 
   function saveTask(id) {
     let newTodo = todo.map((task) => {
       if (task.id === id) {
-        return { ...task, title: value };
+        return { ...task, title: value }
       } else {
-        return task;
+        return task
       }
-    });
-    setTodo(newTodo);
-    setEdit(null);
+    })
+    setTodo(newTodo)
+    setEdit(null)
   }
 
   function getCreatedTime() {
-    const timeAgo = formatDistanceToNow(createdTime, { addSuffix: true });
-    return `created ${timeAgo}`;
+    const timeAgo = formatDistanceToNow(createdTime, { addSuffix: true })
+    return `created ${timeAgo}`
   }
 
   return (
     <div className="view">
-      <input
-        className="toggle"
-        type="checkbox"
-        checked={completed}
-        onChange={() => onCompleteTask(id)}
-      />
+      <input className="toggle" type="checkbox" checked={completed} onChange={() => onCompleteTask(id)} />
       {edit === id ? (
         <label>
           <input value={value} onChange={(e) => setValue(e.target.value)} />
@@ -69,18 +56,12 @@ export default function Task({
         <div></div>
       ) : (
         <div>
-          <button
-            className="icon icon-edit"
-            onClick={() => onEditTask(id, title)}
-          />
-          <button
-            className="icon icon-destroy"
-            onClick={() => onDeleteTask(id)}
-          />
+          <button className="icon icon-edit" onClick={() => onEditTask(id, title)} />
+          <button className="icon icon-destroy" onClick={() => onDeleteTask(id)} />
         </div>
       )}
     </div>
-  );
+  )
 }
 
 Task.propTypes = {
@@ -91,4 +72,4 @@ Task.propTypes = {
   completed: PropTypes.bool,
   onDeleteTask: PropTypes.func,
   onCompleteTask: PropTypes.func,
-};
+}
