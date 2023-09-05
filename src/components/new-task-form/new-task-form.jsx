@@ -3,21 +3,34 @@ import PropTypes from 'prop-types'
 import { v4 as uuidv4 } from 'uuid'
 
 export default function NewTaskForm({ todo, setTodo }) {
-  const [value, setValue] = useState('')
+  const [description, setDescription] = useState('')
+  const [taskMin, setTaskMin] = useState('')
+  const [taskSec, setTaskSec] = useState('')
 
   function addTask(e) {
-    e.preventDefault()
-    if (value) {
+    e.preventDefault() // Предотвращаем отправку формы браузером
+    if (Number(taskSec) > 60) {
+      alert('Seconds should be no more than 60')
+      return
+    }
+    if (description && taskMin !== '' && taskSec !== '') {
       setTodo([
         {
           id: uuidv4(),
-          title: value,
+          title: description,
           completed: false,
+          taskHour: 0,
+          taskMin: taskMin,
+          taskSec: taskSec,
         },
         ...todo,
       ])
-      setValue('')
-    } else alert('Please enter a task')
+      setDescription('')
+      setTaskMin('')
+      setTaskSec('')
+    } else {
+      alert('Please enter a task, minutes, and seconds.')
+    }
   }
 
   return (
@@ -25,10 +38,23 @@ export default function NewTaskForm({ todo, setTodo }) {
       <input
         className="new-todo"
         placeholder="What needs to be done?"
-        required
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
         autoFocus
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
+      />
+      <input
+        className="new-todo_time"
+        type="number"
+        placeholder="min"
+        value={taskMin}
+        onChange={(e) => setTaskMin(e.target.value)}
+      />
+      <input
+        className="new-todo_time"
+        type="number"
+        placeholder="sec"
+        value={taskSec}
+        onChange={(e) => setTaskSec(e.target.value)}
       />
       <button type="submit" onClick={addTask}></button>
     </form>
