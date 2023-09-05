@@ -8,23 +8,29 @@ export default function NewTaskForm({ todo, setTodo }) {
   const [taskSec, setTaskSec] = useState('')
 
   function addTask(e) {
-    e.preventDefault()
-    if (!description) {
-      alert('Please enter a task')
+    e.preventDefault() // Предотвращаем отправку формы браузером
+    if (Number(taskSec) > 60) {
+      alert('Seconds should be no more than 60')
       return
     }
-    const newTask = {
-      id: uuidv4(),
-      title: description,
-      completed: false,
-      taskHour: 0,
-      taskMin,
-      taskSec,
+    if (description && taskMin !== '' && taskSec !== '') {
+      setTodo([
+        {
+          id: uuidv4(),
+          title: description,
+          completed: false,
+          taskHour: 0,
+          taskMin: taskMin,
+          taskSec: taskSec,
+        },
+        ...todo,
+      ])
+      setDescription('')
+      setTaskMin('')
+      setTaskSec('')
+    } else {
+      alert('Please enter a task, minutes, and seconds.')
     }
-    setTodo([newTask, ...todo])
-    setDescription('')
-    setTaskMin('')
-    setTaskSec('')
   }
 
   return (
@@ -34,7 +40,6 @@ export default function NewTaskForm({ todo, setTodo }) {
         placeholder="What needs to be done?"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        required
         autoFocus
       />
       <input
@@ -43,9 +48,6 @@ export default function NewTaskForm({ todo, setTodo }) {
         placeholder="min"
         value={taskMin}
         onChange={(e) => setTaskMin(e.target.value)}
-        min={0}
-        max={1440}
-        required
       />
       <input
         className="new-todo_time"
@@ -53,9 +55,6 @@ export default function NewTaskForm({ todo, setTodo }) {
         placeholder="sec"
         value={taskSec}
         onChange={(e) => setTaskSec(e.target.value)}
-        min={0}
-        max={60}
-        required
       />
       <button type="submit" onClick={addTask}></button>
     </form>
