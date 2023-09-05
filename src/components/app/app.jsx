@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import '../../main.css'
 import '../../additional.css'
 
@@ -9,22 +9,32 @@ import TaskList from '../task-list/task-list'
 export default function App() {
   const [todo, setTodo] = useState([
     {
-      id: 1,
+      id: '1',
       title: 'First task',
       completed: false,
+      taskHour: '1',
+      taskMin: '2',
+      taskSec: '3',
     },
     {
-      id: 2,
+      id: '2',
       title: 'Second task',
       completed: true,
+      taskHour: '1',
+      taskMin: '2',
+      taskSec: '3',
     },
     {
-      id: 3,
+      id: '3',
       title: 'Third task',
       completed: false,
+      taskHour: '1',
+      taskMin: '2',
+      taskSec: '3',
     },
   ])
   const [filtered, setFiltered] = useState(todo)
+
   const activeTasks = todo.filter((task) => !task.completed).length
   useEffect(() => {
     setFiltered(todo)
@@ -34,22 +44,22 @@ export default function App() {
     if (filter === 'all') {
       setFiltered(todo)
     } else {
-      let newTodo = [...todo].filter((item) => item.completed !== filter)
-      setFiltered(newTodo)
+      setFiltered(todo.filter((item) => item.completed !== filter))
     }
   }
 
   function clearCompleted() {
-    let newTodo = [...todo].filter((item) => !item.completed)
+    const newTodo = todo.filter((item) => !item.completed)
     setTodo(newTodo)
   }
+
   return (
     <>
       <header>
         <h1>Todos</h1>
       </header>
       <NewTaskForm todo={todo} setTodo={setTodo} />
-      <TaskList todo={todo} setTodo={setTodo} title={todo.title} filtered={filtered} />
+      <TaskList todo={todo} setTodo={setTodo} filtered={filtered} />
       <Footer filterTasks={filterTasks} activeTasks={activeTasks} clearCompleted={clearCompleted} />
     </>
   )

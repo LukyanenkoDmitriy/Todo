@@ -4,7 +4,7 @@ import Task from '../task/task'
 
 export default function TaskList({ todo, setTodo, filtered }) {
   function onDeleteTask(id) {
-    const newTodo = [...todo].filter((task) => task.id !== id)
+    const newTodo = todo.filter((task) => task.id !== id)
     setTodo(newTodo)
   }
 

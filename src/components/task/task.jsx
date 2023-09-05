@@ -2,10 +2,14 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { formatDistanceToNow } from 'date-fns'
 
+import Timer from '../task-timer/timer'
+
 export default function Task({ todo, setTodo, id, title, completed, onDeleteTask, onCompleteTask }) {
   const [edit, setEdit] = useState(null)
   const [value, setValue] = useState('')
   const [createdTime] = useState(new Date())
+
+  const task = todo.find((taskItem) => taskItem.id === id)
 
   let classNames = 'description'
 
@@ -17,12 +21,11 @@ export default function Task({ todo, setTodo, id, title, completed, onDeleteTask
   }
 
   function saveTask(id) {
-    let newTodo = todo.map((task) => {
-      if (task.id === id) {
-        return { ...task, title: value }
-      } else {
-        return task
+    const newTodo = todo.map((taskItem) => {
+      if (taskItem.id === id) {
+        return { ...taskItem, title: value }
       }
+      return taskItem
     })
     setTodo(newTodo)
     setEdit(null)
@@ -48,6 +51,14 @@ export default function Task({ todo, setTodo, id, title, completed, onDeleteTask
           <span className={classNames} onClick={() => onCompleteTask(id)}>
             {title}
           </span>
+          <Timer
+            taskMin={task ? parseInt(task.taskHour) * 60 + parseInt(task.taskMin) : 0}
+            taskSec={task ? parseInt(task.taskSec) : 0}
+            onTimerComplete={() => {
+              // Действия, которые нужно выполнить по истечении времени (например, пометить задачу как завершенную)
+              onCompleteTask(id)
+            }}
+          />
           <span className="created">{getCreatedTime()}</span>
         </label>
       )}
@@ -67,7 +78,7 @@ export default function Task({ todo, setTodo, id, title, completed, onDeleteTask
 Task.propTypes = {
   todo: PropTypes.arrayOf(PropTypes.object),
   setTodo: PropTypes.func,
-  id: PropTypes.number,
+  id: PropTypes.string,
   title: PropTypes.string,
   completed: PropTypes.bool,
   onDeleteTask: PropTypes.func,
